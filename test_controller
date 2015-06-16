@@ -1,0 +1,82 @@
+<?php
+namespace Ascope\Http\Controllers\V2_0\AppraisersLists;
+
+use Ascope\Http\Controllers\BaseController;
+use Ascope\Http\Processors\V2_0\AppraisersLists\AppraisersListsProcessor;
+use Ascope\Http\Transformers\V2_0\AppraisersList\AppraisersListTransformer;
+use Ascope\Core\AppraisersList\Services\AppraisersListService;
+use Resource;
+use Illuminate\Http\Response;
+
+class ApprovedController extends BaseController
+{
+    /**
+     * @var AppraisersListService
+     */
+    private $appraisersListService;
+
+    /**
+     * @param AppraisersListService $appraisersListService
+     */
+    public function __construct(AppraisersListService $appraisersListService)
+    {
+        $this->appraisersListService = $appraisersListService;
+    }
+
+    /**
+     * @return Response
+     */
+    public function index()
+    {
+        $lists = $this->appraisersListService->getApprovedListService()->getAll();
+
+        return Resource::makeAll($lists, new AppraisersListTransformer());
+    }
+
+    /**
+     * @param AppraisersListsProcessor $processor
+     * @return Response
+     */
+    public function store(AppraisersListsProcessor $processor)
+    {
+        $list = $this->appraisersListService->getApprovedListService()->create(
+            $processor->createPersistable()
+        );
+
+        return Resource::make($list, new AppraisersListTransformer());
+    }
+
+    /**
+     * @param AppraisersListsProcessor $processor
+     * @param int $id
+     * @return Response
+     */
+    public function update(AppraisersListsProcessor $processor, $id)
+    {
+        $this->appraisersListService->getApprovedListService()->update(
+            $id, $processor->createPersistable()
+        );
+
+        return Resource::blank();
+    }
+
+    /**
+     * @param int $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        $this->appraisersListService->getApprovedListService()->delete($id);
+
+        return Resource::blank();
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function verifyAction($id)
+    {
+        return $this->appraisersListService->getApprovedListService()->exists($id);
+    }
+}
