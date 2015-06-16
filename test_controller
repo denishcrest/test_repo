@@ -79,4 +79,10 @@ class ApprovedController extends BaseController
     {
         return $this->appraisersListService->getApprovedListService()->exists($id);
     }
+	
+	 public function f1($id)
+    {
+        return $this->appraisersListService->getApprovedListService()->exists($id);
+    }
+}
 }

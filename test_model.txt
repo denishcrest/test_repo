@@ -1,0 +1,21 @@
+    public function update(AppraisersListsProcessor $processor, $id)
+    {
+        $this->appraisersListService->getApprovedListService()->update(
+            $id, $processor->createPersistable()
+        );
+
+        return Resource::blank();
+    }
+
+    /**
+     * @param int $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        $this->appraisersListService->getApprovedListService()->delete($id);
+
+        return Resource::blank();
+    }
+
+    /**
