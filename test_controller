@@ -8,7 +8,7 @@ use Ascope\Core\AppraisersList\Services\AppraisersListService;
 use Resource;
 use Illuminate\Http\Response;
 
-class ApprovedController extends BaseController
+class ApprovedController extends BaseController UPDATE FOR BRANCH 1
 {
     /**
      * @var AppraisersListService
